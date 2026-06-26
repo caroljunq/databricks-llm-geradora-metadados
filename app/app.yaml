@@ -1,0 +1,16 @@
+command:
+  - "streamlit"
+  - "run"
+  - "app.py"
+  - "--server.port"
+  - "8000"
+  - "--server.address"
+  - "0.0.0.0"
+
+env:
+  - name: VECTOR_SEARCH_ENDPOINT
+    value: "vs_metadados_endpoint"
+  - name: VECTOR_SEARCH_INDEX
+    value: "SEUCATALOGO.resultados_metadados.tabela_metadados_index"
+  - name: METADATA_TABLE
+    value: "SEUCATALOGO.resultados_metadados.tabela_metadados"

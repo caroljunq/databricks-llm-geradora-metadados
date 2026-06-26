@@ -1,0 +1,3 @@
+streamlit>=1.38.0
+databricks-sdk>=0.30.0
+databricks-vectorsearch>=0.40
