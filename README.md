@@ -82,4 +82,4 @@ databricks-llm-geradora-metadados/
 1. **Notebook 1** — Execute informando o widget `catalog` para gerar o schema `demo_energia` e as 10 tabelas.
 2. **Notebook 2** — Execute (mesmo `catalog`) para gerar os metadados com o LLM e gravar `resultados_metadados.tabela_metadados`.
 3. **Notebook 3** — Execute para criar o endpoint e o índice de Vector Search. Anote os valores impressos ao final.
-4. **App** — Atualize o `app/app.yaml` (ou as variáveis de ambiente) com o endpoint e o índice gerados e faça o deploy do Databricks App.
+4. **App** — Atualize o `app/app.yaml` (ou as variáveis de ambiente) com o endpoint e o índice gerados e faça o deploy do Databricks App. Não se esqueça de permitir ao service_principal do app permissões ao catálogo e ao schema do vector_search index. Este app não está utilizando o OBO (On-Behalf-Of (OBO) Authorization), ou seja, todos os usuários herdam a mesma permissão para visualizar os dados. Caso queira restringir o acesso de acordo com a identidade de cada usuário use https://github.com/databricks-solutions/databricks-apps-examples/blob/main/auth-demo/README.md .

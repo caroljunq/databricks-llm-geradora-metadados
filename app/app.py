@@ -10,7 +10,6 @@ lidos diretamente do Unity Catalog via SDK.
 import os
 import streamlit as st
 from databricks.sdk import WorkspaceClient
-from databricks.vector_search.client import VectorSearchClient
 
 # =============================================================================
 # CONFIGURAÇÃO - preencha de acordo com o que o Notebook 3 imprimiu no final
@@ -26,12 +25,10 @@ st.set_page_config(page_title="Buscador de Metadados", page_icon="*", layout="wi
 
 @st.cache_resource
 def get_clients():
-    w = WorkspaceClient()
-    vsc = VectorSearchClient(disable_notice=True)
-    return w, vsc
+    return WorkspaceClient()
 
 
-w, vsc = get_clients()
+w = get_clients()
 
 # Colunas do índice (modelo de entidade)
 SEARCH_COLUMNS = [
@@ -41,15 +38,15 @@ SEARCH_COLUMNS = [
 
 
 def buscar(query: str, num_results: int = 50):
-    """Busca semântica no índice de Vector Search. Retorna lista de dicts."""
-    index = vsc.get_index(endpoint_name=VECTOR_SEARCH_ENDPOINT, index_name=VECTOR_SEARCH_INDEX)
-    res = index.similarity_search(
-        query_text=query,
+    """Busca semântica no índice de Vector Search via SDK. Retorna lista de dicts."""
+    res = w.vector_search_indexes.query_index(
+        index_name=VECTOR_SEARCH_INDEX,
         columns=SEARCH_COLUMNS,
+        query_text=query,
         num_results=num_results,
     )
-    data = res.get("result", {}).get("data_array", []) or []
-    cols = [c["name"] for c in res.get("manifest", {}).get("columns", [])]
+    data = res.result.data_array or []
+    cols = [c.name for c in (res.manifest.columns or [])]
     return [dict(zip(cols, r)) for r in data]
 
 
